@@ -40,7 +40,9 @@ form {
 }
 
 .bgcolor {
-    background-color: gray;
+    background: linear-gradient(300deg, #00bfff, #ff4c68, #ef8172);
+    background-size: 180% 180%;
+    animation: gradient-animation 10s ease infinite;
 }
 
 .responsebox {
