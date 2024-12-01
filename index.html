@@ -16,9 +16,12 @@
                   <p class="fs-4 icon">MangoBot</p>
               </div>
         
-              <div class="col-md-3 text-end">
-                <a href="./login.html"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
-                <a href="./index.html"><button type="button" class="btn btn-primary">Sign-up</button></a>
+              <div class="col-md-3 text-end mx-2">
+                <ul class="nav col justify-content-end list-unstyled d-flex">
+                  <li class="ms-3"><a class="text-body-secondary" href="https://www.linkedin.com/in/moh-sad"><img src="./linkedin.png" width="30" height="30" alt="Linkedin icon"></a></li>
+                  <li class="ms-3"><a class="text-body-secondary" href="http://t.me/ma_me_2"><img src="./Telegram.png" width="30" height="30" alt="Telegram icon"></a></li>
+                  <li class="ms-3"><a class="text-body-secondary" href="http://www.github.com/moh-sad"><img src="./github_2.png" width="30" height="30" alt="Github icon"></a></li>
+              </ul>
               </div>
             </header>
           </div>
@@ -26,20 +29,20 @@
 
     <!-- Signup Form -->
     <section>
-        <div class="container col-xl-10 col-xxl-8 px-3 py-5">
-            <div class="row align-items-center g-lg-5 py-5">
+        <div class="container col-xl-10 col-xxl-8 px-3 py-4">
+            <div class="row align-items-center g-lg-5 py-4">
               <div class="col-lg-7 text-center text-lg-start greeting">
                 <h1 class="fw-bold lh-1 text-body-emphasis mb-3">Welcome to MangoBot!</h1>
                 <p class="col-lg-10 fs-4">We're thrilled to have you here! Sign up to dive into a world of interactive conversations, helpful insights, and fun engagement. Let's get started and make your experience as vibrant and fruitful as a ripe mango!</p>
               </div>
               <div class="col-md-10 mx-auto col-lg-5">
-                <form class="p-4 p-md-5 border rounded-3 bg-body-secondary">
+                <form class="p-4 p-md-5 border rounded-3 bg-body-primary greeting">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" data-has-listeners="true">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" data-has-listeners="true" name="email" required>
                     <label for="floatingInput">Email address</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" data-has-listeners="true">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" data-has-listeners="true" name="password" required>
                     <label for="floatingPassword">Password</label>
                   </div>
                   <div class="checkbox mb-3">
@@ -50,6 +53,7 @@
                   <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
                   <hr class="my-4">
                   <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                  <small><a href="./login.html" class="d-flex justify-content-center align-items-center text-body-emphasis mt-3"> <u>Already have An Acoount? Login</u></a></small>
                 </form>
               </div>
             </div>

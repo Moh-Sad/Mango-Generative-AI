@@ -16,9 +16,12 @@
                   <p class="fs-4 icon">MangoBot</p>
               </div>
         
-              <div class="col-md-3 text-end">
-                <a href="./login.html"><button type="button" class="btn btn-primary me-2">Login</button></a>
-                <a href="./index.html"><button type="button" class="btn btn-outline-primary">Sign-up</button></a>
+              <div class="col-md-3 text-end mx-2">
+                <ul class="nav col justify-content-end list-unstyled d-flex">
+                  <li class="ms-3"><a class="text-body-secondary" href="https://www.linkedin.com/in/moh-sad"><img src="./linkedin.png" width="30" height="30" alt="Linkedin icon"></a></li>
+                  <li class="ms-3"><a class="text-body-secondary" href="http://t.me/ma_me_2"><img src="./Telegram.png" width="30" height="30" alt="Telegram icon"></a></li>
+                  <li class="ms-3"><a class="text-body-secondary" href="http://www.github.com/moh-sad"><img src="./github_2.png" width="30" height="30" alt="Github icon"></a></li>
+              </ul>
               </div>
           </div>
     </section>
@@ -32,13 +35,13 @@
                 <p class="col-lg-10 fs-4">We missed you! Log in to continue exploring, chatting, and enjoying all the exciting features waiting for you. Let's pick up right where we left off!</p>
               </div>
               <div class="col-md-10 mx-auto col-lg-5">
-                <form class="p-4 p-md-5 border rounded-3 bg-body-secondary">
+                <form class="p-4 p-md-5 border rounded-3 bg-body-primary greeting">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" data-has-listeners="true">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" data-has-listeners="true" name="email">
                     <label for="floatingInput">Email address</label>
                   </div>
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" data-has-listeners="true">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" data-has-listeners="true" name="password">
                     <label for="floatingPassword">Password</label>
                   </div>
                   <div class="checkbox mb-3">
@@ -47,6 +50,7 @@
                     </label>
                   </div>
                   <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+                  <small><a href="./index.html" class="d-flex justify-content-center align-items-center text-body-emphasis mt-4"> <u>Don't Have An Account? Register</u></a></small>
                 </form>
               </div>
             </div>

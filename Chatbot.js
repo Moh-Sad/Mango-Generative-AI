@@ -33,3 +33,5 @@ $(document).ready(function() {
         });
     });
 });
+
+const { } = require('mysql');
