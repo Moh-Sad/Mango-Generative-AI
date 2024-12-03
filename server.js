@@ -1,10 +1,10 @@
 const mysql = require("mysql");
 const express = require("express");
-const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const app = express();
+const {getGeminiResponse} = require("./Chatbot")
 
 app.use(express.static(__dirname));
 app.use(cors());
@@ -21,7 +21,7 @@ const connection  = mysql.createConnection({
 
 connection.connect(function(error){
     if (error) throw error;
-    else console.log("Connected to MySQL Database Successfully")
+    else console.log("Connected to MySQL Database Successfully");
 });
 
 app.post('/submit', async (req, res) => {
@@ -62,5 +62,20 @@ app.post('/login', (req, res) => {
         }
     });
 });
+
+app.post("/geminiResponse",async (req,res) => {
+    const {prompt} = req.body
+
+    if (!prompt) {
+        return res.status(400).send("Prompt is required.");
+    }
+    try {
+        const aiResponse = await getGeminiResponse(prompt);
+        console.log("keay")
+        res.send(aiResponse);
+    } catch (error) {
+        res.status(500).send(`Eroror: ${error.message}`);
+    }
+})
 
 app.listen(3000);
