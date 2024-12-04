@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const app = express();
-const {getGeminiResponse} = require("./Chatbot")
+const {getGeminiResponse} = require("./Chatbot");
 
 app.use(express.static(__dirname));
 app.use(cors());
@@ -28,21 +28,34 @@ app.post('/submit', async (req, res) => {
     const { full_name, phone, email, password } = req.body;
 
     try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const sql = 'INSERT INTO user_register (full_name, phone, email, password, hash) VALUES (?, ?, ?, ?, ?)';
-        
-        connection.query(sql, [full_name, phone, email, password, hashedPassword], (err, result) => {
+        const checkEmailSql = 'SELECT email FROM user_register WHERE email = ?';
+        connection.query(checkEmailSql, [email], async (err, results) => {
             if (err) {
-                console.error('Error inserting user:', err);
-                return res.status(500).send('An error occurred while saving your data.');
+                console.error('Error checking email:', err);
+                return res.redirect('/index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
             }
-            res.redirect('/Chatpage.html');
+
+            if (results.length > 0) {
+                return res.redirect('/index.html?message=Email%20is%20already%20in%20use!');
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const insertSql = 'INSERT INTO user_register (full_name, phone, email, password, hash) VALUES (?, ?, ?, ?, ?)';
+            
+            connection.query(insertSql, [full_name, phone, email, password, hashedPassword], (err, result) => {
+                if (err) {
+                    console.error('Error inserting user:', err);
+                    return res.redirect('/index.html?message=An%20error%20occurred%20while%20saving%20your%20data.');
+                }
+                res.redirect('/Chatpage.html');
+            });
         });
     } catch (error) {
         console.error('Error hashing password:', error);
-        res.status(500).send('An error occurred while processing your request.');
+        res.redirect('/index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
     }
 });
+
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -55,10 +68,10 @@ app.post('/login', (req, res) => {
             if (match) {
                 res.redirect("/Chatpage.html");
             } else {
-                res.send('Incorrect password!');
+                res.redirect('/login.html?message=Incorrect%20Password');
             }
         } else {
-            res.send('Email not found!');
+            res.redirect('/login.html?message=Email%20not%20found!');
         }
     });
 });
@@ -71,11 +84,10 @@ app.post("/geminiResponse",async (req,res) => {
     }
     try {
         const aiResponse = await getGeminiResponse(prompt);
-        console.log("keay")
         res.send(aiResponse);
     } catch (error) {
         res.status(500).send(`Eroror: ${error.message}`);
     }
-})
+});
 
 app.listen(3000);

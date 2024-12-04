@@ -9,7 +9,7 @@
   </head>
 <body class="bgcolor">
     <!-- Header -->
-    <section>
+    <section style="margin-bottom: 100px;">
         <nav class="navbar fixed-top headbgcolor">
             <div class="container-fluid">
               <div class="col-md-3 mb-md-0 d-flex flex-wrap align-items-center justify-content-center">
@@ -30,7 +30,7 @@
                       <a class="nav-link-active" aria-current="page" href="./Chatpage.html">Home</a>
                     </li>
                   <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">New Conversation</a>
+                    <a class="nav-link" aria-current="page" href="http://localhost:3000/Chatpage.html" target="_blank">New Conversation</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">History</a>
@@ -49,67 +49,80 @@
     </section>
 
     <!-- Body -->
-    <section class="responsebox">
-      <div class="container mb-2 rounded text-body-emphasis bg-body-secondary mt-5 answerbox">
-        <div class="col px-0 answerbox"  id="responseDiv">
-          <p class="lead my-2 paragraph" id="response">|</p>
-        </div>
+    <section class="chat-container">
+      <div class="greeting-container">
+        <h1 class="greeting-title">Generative AI MangoBot</h1>
+        <p class="greeting-subtitle">is here to help!</p>
       </div>
-
-      <div class="container input-group">
-        <input type="text" id="userInput" placeholder="Ask me!" class="form-control" aria-label="text" aria-describedby="button-addon2">
-        <button class="btn btn-primary" type="button" id="submitBtn">Search</button>
+      <div id="loading-message" style="display: none;">Generating response, please wait...</div>
+      <div class="chatbox" id="chatbox"></div>
+      <div class="input-group">
+        <input type="text" id="userInput" placeholder="Ask me!" class="form-control">
+        <button class="btn btn-primary" id="submitBtn">Send</button>
       </div>
     </section>
-    
+
     <script src="./Chatbot.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const submitBtn = document.getElementById('submitBtn');
-        const userInput = document.getElementById('userInput');
-        const responseDiv = document.getElementById('response');
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const chatbox = document.getElementById("chatbox");
+  const userInput = document.getElementById("userInput");
+  const submitBtn = document.getElementById("submitBtn");
+  const loadingMessage = document.getElementById("loading-message");
+  const chatContainer = document.querySelector('.chat-container');
+  const greetingContainer = document.querySelector('.greeting-container');
 
-        async function handleSubmit() {
-          const prompt = userInput.value;
-          if (!prompt.trim()) {
-            responseDiv.textContent = "Please enter a valid prompt.";
-            return;
-          }
+  function appendMessage(content, sender) {
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message", sender);
+    messageDiv.textContent = content;
+    chatbox.appendChild(messageDiv);
+    chatbox.scrollTop = chatbox.scrollHeight; 
+  }
 
-          responseDiv.textContent = "Loading...";
-          userInput.value = "";
+  async function handleUserInput() {
+    const userMessage = userInput.value.trim();
+    if (!userMessage) return;
+    
+    document.querySelector('#chatbox').style.display = 'flex';
+    appendMessage(userMessage, "user");
+    userInput.value = "";
+    loadingMessage.style.display = "flex";
+    chatContainer.style.marginTop = '80px';
+    chatContainer.style.height = '500px';
+    greetingContainer.style.display = 'none';
 
-          try {
-            const response = await fetch("/geminiResponse", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ prompt }),
-            });
-
-            if (!response.ok) {
-              throw new Error("Failed to fetch the response");
-            }
-
-            const data = await response.text();
-            responseDiv.textContent = data;
-          } catch (error) {
-            responseDiv.textContent = `Error: ${error.message}`;
-          }
-        }
-
-        submitBtn.addEventListener("click", handleSubmit);
-        userInput.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            handleSubmit();
-          }
-        });
+    try {
+      const response = await fetch("/geminiResponse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: userMessage }),
       });
-    </script>
+
+      if (!response.ok) throw new Error("Failed to fetch response from server.");
+
+      const botMessage = await response.text();
+      appendMessage(botMessage, "bot");
+    } catch (error) {
+      appendMessage("Error: Unable to get a response. Please try again.", "bot");
+      console.error("Error:", error);
+    } finally {
+        loadingMessage.style.display = "none";
+      }
+  }
+
+  submitBtn.addEventListener("click", handleUserInput);
+  userInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleUserInput();
+    }
+  });
+});
+
+  </script>
   </body>
 </html>
