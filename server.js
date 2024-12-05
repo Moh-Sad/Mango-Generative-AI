@@ -12,7 +12,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 
 app.use(session({
-    secret: 'QQQQwwww12345',
+    secret: SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
