@@ -118,7 +118,7 @@
         loadingMessage.style.display = "none";
       }
     }
-    
+
   submitBtn.addEventListener("click", handleUserInput);
   userInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -126,6 +126,82 @@
       handleUserInput();
     }
   });
+});
+
+async function loadChatHistory() {
+    const userEmail = localStorage.getItem("userEmail");
+
+    try {
+        const response = await fetch("/getHistory", {
+            method: "GET",
+            headers: {
+                "user-email": userEmail,
+            },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch conversation history.");
+
+        const history = await response.text();
+        const messages = history.split('\n').filter(line => line.trim() !== '');
+        messages.forEach(msg => {
+            const [sender, ...content] = msg.split(': ');
+            appendMessage(content.join(': '), sender.toLowerCase());
+        });
+    } catch (error) {
+        console.error("Error loading chat history:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadChatHistory);
+
+async function handleUserInput() {
+    const userMessage = userInput.value.trim();
+    if (!userMessage) return;
+
+    const userEmail = localStorage.getItem("userEmail");
+
+    appendMessage(userMessage, "user");
+    userInput.value = "";
+
+    try {
+        const response = await fetch("/geminiResponse", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "user-email": userEmail,
+            },
+            body: JSON.stringify({ prompt: userMessage }),
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch response from server.");
+
+        const botMessage = await response.text();
+        appendMessage(botMessage, "bot");
+    } catch (error) {
+        appendMessage("Error: Unable to get a response. Please try again.", "bot");
+        console.error("Error:", error);
+    }
+}
+
+app.get("/getHistory", (req, res) => {
+    const userEmail = req.headers['user-email'];
+    if (!userEmail) {
+        return res.status(400).send("User email is required.");
+    }
+
+    const fetchHistorySql = 'SELECT history FROM user_register WHERE email = ?';
+    connection.query(fetchHistorySql, [userEmail], (err, results) => {
+        if (err) {
+            console.error("Error fetching history:", err);
+            return res.status(500).send("Database error.");
+        }
+
+        if (results.length > 0) {
+            res.send(results[0].history || ""); 
+        } else {
+            res.status(404).send("No history found.");
+        }
+    });
 });
 
   </script>

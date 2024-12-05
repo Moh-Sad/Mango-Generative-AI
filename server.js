@@ -51,11 +51,9 @@ app.post('/submit', async (req, res) => {
                 console.error('Error checking email:', err);
                 return res.redirect('/index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
             }
-
             if (results.length > 0) {
                 return res.redirect('/index.html?message=Email%20is%20already%20in%20use!');
             }
-
             const hashedPassword = await bcrypt.hash(password, 10);
             const insertSql = 'INSERT INTO user_register (full_name, phone, email, password, hash) VALUES (?, ?, ?, ?, ?)';
             
@@ -98,21 +96,36 @@ app.post("/geminiResponse", async (req, res) => {
     if (!prompt) {
         return res.status(400).send("Prompt is required.");
     }
-
     try {
         const userEmail = req.headers['user-email'];
         if (!userEmail) {
             return res.status(400).send("User email is required.");
         }
+        const fetchHistorySql = 'SELECT history FROM user_register WHERE email = ?';
+        connection.query(fetchHistorySql, [userEmail], async (err, results) => {
+            if (err) {
+                console.error("Database error fetching history:", err);
+                return res.status(500).send("Database error.");
+            }
 
-        const aiResponse = await getGeminiResponse(prompt);
-
-        res.send(aiResponse);
+            let updatedHistory = results[0]?.history || "";
+            const botResponse = await getGeminiResponse(prompt);
+            updatedHistory += `User: ${prompt}\nBot: ${botResponse}\n`;
+            const updateHistorySql = 'UPDATE user_register SET history = ? WHERE email = ?';
+            connection.query(updateHistorySql, [updatedHistory, userEmail], (updateErr) => {
+                if (updateErr) {
+                    console.error("Error updating conversation history:", updateErr);
+                    return res.status(500).send("Error updating history.");
+                }
+                res.send(botResponse);
+            });
+        });
     } catch (error) {
         console.error("Error in Gemini response:", error);
         res.status(500).send(`Error: ${error.message}`);
     }
 });
+
 
 passport.use(new GoogleStrategy({
     clientID: "259595659568-lreeq63g5cdogljdr5qnaamqinfgmpqv.apps.googleusercontent.com",
