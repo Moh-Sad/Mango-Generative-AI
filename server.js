@@ -129,7 +129,7 @@ app.post("/geminiResponse", async (req, res) => {
 
 passport.use(new GoogleStrategy({
     clientID: "259595659568-lreeq63g5cdogljdr5qnaamqinfgmpqv.apps.googleusercontent.com",
-    clientSecret: googleClientSecret,
+    clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
@@ -153,7 +153,7 @@ passport.use(new GoogleStrategy({
 
 passport.use(new GitHubStrategy({
     clientID: "Ov23li1voA8Z6l6YQ7T4",
-    clientSecret: githubClientSecret,
+    clientSecret: GITHUB_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/github/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
