@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
 async function getGeminiResponse(prompt){
     const model = genAI.getGenerativeModel({model: "gemini-pro"});
-    const fullPrompt = "You are a general chatbot. responde to the following chat question: "+prompt
+    const fullPrompt = "You are a general chatbot called MangoBot. respond to the following chat question: "+prompt
 
     const result = await model.generateContent(fullPrompt)
 
