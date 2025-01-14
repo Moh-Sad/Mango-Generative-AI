@@ -12,7 +12,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 
 app.use(session({
-    secret: "hghuyghhgvhvgfffxfxvjhj",
+    secret: SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
@@ -129,7 +129,6 @@ app.post("/geminiResponse", async (req, res) => {
 
 passport.use(new GoogleStrategy({
     clientID: "259595659568-lreeq63g5cdogljdr5qnaamqinfgmpqv.apps.googleusercontent.com",
-    clientSecret: "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",
     callbackURL: "http://localhost:3000/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
@@ -153,7 +152,6 @@ passport.use(new GoogleStrategy({
 
 passport.use(new GitHubStrategy({
     clientID: "Ov23li1voA8Z6l6YQ7T4",
-    clientSecret: '9ccadd07d7fbb40ca11ca148b48b6e68147e57c4',
     callbackURL: "http://localhost:3000/auth/github/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {

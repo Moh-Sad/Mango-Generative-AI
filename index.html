@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangoBot</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body class="bgimage">
+
+    <!-- Errors Alert -->
+    <div class="alert-box">
+      <p class="alert">Message</p>
+    </div>
+    
+    <!-- Header -->
+    <section class="headbgcolor">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1 mb-4 px-2">
+            <div class="col-md-3 mb-2 mb-md-0 d-flex flex-wrap align-items-center justify-content-center">
+                <img width="40" height="32" src="/images/Mango_icon.png" alt="Mango icon">
+                <p class="fs-4 icon">MangoBot</p>
+            </div>
+      
+            <div class="col-md-3 text-end mx-2">
+                <ul class="nav col justify-content-end list-unstyled d-flex">
+                    <li class="ms-3"><a class="text-body-secondary" href="https://www.linkedin.com/in/moh-sad"><img src="/images/linkedin.png" width="30" height="30" alt="LinkedIn icon"></a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="http://t.me/ma_me_2"><img src="/images/Telegram.png" width="30" height="30" alt="Telegram icon"></a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="http://www.github.com/moh-sad"><img src="/images/github_2.png" width="30" height="30" alt="GitHub icon"></a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signup Form -->
+    <section>
+        <div class="container col-xl-10 col-xxl-8 px-3 py-4">
+            <div class="row align-items-center g-lg-5 py-4">
+                <div class="col-lg-7 text-center greeting">
+                    <h1 class="fw-bold lh-1 text-body-emphasis mb-3">Welcome to MangoBot!</h1>
+                    <p class="fs-4">Sign up to dive into a world of interactive conversations, helpful insights, and fun engagement.</p>
+                </div>
+                <div class="col-md-10 mx-auto col-lg-5">
+                    <form id="signupForm" class="p-4 p-md-5 border rounded-3 bg-body-secondary" action="/submit" method="POST">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="full_name" placeholder="Full Name" name="full_name" required>
+                            <label for="full_name">Full Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="phone" placeholder="Phone Number" name="phone" required>
+                            <label for="phone">Phone</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                            <label for="email">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" value="remember-me"> Remember me
+                            </label>
+                        </div>
+                        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+                        <hr class="my-4">
+                        <small class="text-body-secondary mb-2">By clicking Sign up, you agree to the terms of use.</small>
+                        <button type="button" class="btn btn-outline-primary w-100 mb-2" onclick="window.location.href='/auth/google'"><img src="/images/google.png" width="25" height="22" alt="Google icon"> Continue with Google</button>
+                        <button type="button" class="btn btn-outline-dark w-100" onclick="window.location.href='/auth/github'"><img src="/images/github.png" width="25" height="22" alt="Github icon"> Continue with GitHub</button>
+                        <small class="d-flex justify-content-center align-items-center text-body-emphasis mt-3">
+                          Already have an account? <a href="./login.html" class="ms-2"><u>Login</u></a>
+                        </small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        function showMessage(message, duration = 3000) {
+            const alertBox = document.querySelector(".alert-box");
+            const alertElement = document.querySelector(".alert");
+        
+            alertElement.textContent = message;
+            alertBox.classList.add("show");
+        
+            setTimeout(() => {
+                alertBox.classList.remove("show");
+            }, duration);
+        }
+      
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get("message");
+      
+        if (message) {
+            showMessage(decodeURIComponent(message));
+        }
+    </script>
+</body>
+</html>
