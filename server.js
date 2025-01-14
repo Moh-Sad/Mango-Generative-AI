@@ -12,7 +12,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 
 app.use(session({
-    secret: SECRET_KEY,
+    secret: 'djnifd7897dnjc',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
@@ -49,10 +49,10 @@ app.post('/submit', async (req, res) => {
         connection.query(checkEmailSql, [email], async (err, results) => {
             if (err) {
                 console.error('Error checking email:', err);
-                return res.redirect('/index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
+                return res.redirect('../index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
             }
             if (results.length > 0) {
-                return res.redirect('/index.html?message=Email%20is%20already%20in%20use!');
+                return res.redirect('../index.html?message=Email%20is%20already%20in%20use!');
             }
             const hashedPassword = await bcrypt.hash(password, 10);
             const insertSql = 'INSERT INTO user_register (full_name, phone, email, password, hash) VALUES (?, ?, ?, ?, ?)';
@@ -62,12 +62,12 @@ app.post('/submit', async (req, res) => {
                     console.error('Error inserting user:', err);
                     return res.redirect('/index.html?message=An%20error%20occurred%20while%20saving%20your%20data.');
                 }
-                res.redirect('/Chatpage.html')
+                res.redirect('../Chatpage.html')
             });
         });
     } catch (error) {
         console.error('Error hashing password:', error);
-        res.redirect('/index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
+        res.redirect('../index.html?message=An%20error%20occurred%20while%20processing%20your%20request.');
     }
 });
 
@@ -80,12 +80,12 @@ app.post('/login', (req, res) => {
         if (results.length > 0) {
             const match = await bcrypt.compare(password, results[0].hash);
             if (match) {
-                res.redirect('/Chatpage.html')
+                res.redirect('../Chatpage.html');
             } else {
-                res.redirect('/login.html?message=Incorrect%20Password');
+                res.redirect('../login.html?message=Incorrect%20Password');
             }
         } else {
-            res.redirect('/login.html?message=Email%20not%20found!');
+            res.redirect('../login.html?message=Email%20not%20found!');
         }
     });
 });
@@ -217,7 +217,7 @@ app.get('/auth/google/callback',
         if (user.requiresPassword) {
             res.redirect(`/setup-password?email=${user.email}&fullName=${user.fullName}`);
         } else {
-            res.redirect('/Chatpage.html');
+            res.redirect('../Chatpage.html');
         }
     }
 );
@@ -232,7 +232,7 @@ app.get('/auth/github/callback',
         if (user.requiresPassword) {
             res.redirect(`/setup-password?email=${user.email}&fullName=${user.fullName}`);
         } else {
-            res.redirect('/Chatpage.html');
+            res.redirect('../Chatpage.html');
         }
     }
 );
@@ -249,7 +249,7 @@ app.post('/setup-password', async (req, res) => {
                 console.error('Error updating password:', err);
                 return res.redirect('/setup-password?error=An%20error%20occurred');
             }
-            res.redirect('/Chatpage.html');
+            res.redirect('../Chatpage.html');
         });
     } catch (error) {
         console.error('Error hashing password:', error);
