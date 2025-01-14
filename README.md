@@ -80,13 +80,13 @@ Mangobot is a Generative AI chatbot built using Node.js and MySQL. It was create
 ## Screenshots
 
 ### Login Page
-![Login Page](./screenshots/login-page.png)
+![Login Page](https://github.com/Moh-Sad/Mango-Generative-AI/blob/main/public/images/LoginPage.png)
 
 ### Signup Page
-![Signup Page](./screenshots/signup-page.png)
+![Signup Page](https://github.com/Moh-Sad/Mango-Generative-AI/blob/main/public/images/SignupPage.png)
 
 ### Homepage
-![Homepage](./screenshots/homepage.png)
+![Homepage](https://github.com/Moh-Sad/Mango-Generative-AI/blob/main/public/images/HomePage.png)
 
 ---
 
