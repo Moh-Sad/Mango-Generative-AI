@@ -40,8 +40,8 @@ Mangobot is a Generative AI chatbot built using Node.js and MySQL. It was create
 ### Steps
 1. Clone this repository.
    ```bash
-   git clone https://github.com/yourusername/mangobot.git
-   cd mangobot
+   git clone https://github.com/Moh-Sad/Mango-Generative-AI
+   cd Mango-Generative-AI
    ```
 
 2. Install the required dependencies.
